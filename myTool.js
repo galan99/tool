@@ -75,6 +75,31 @@ let myTool = (function () {}(
       var ua = window.navigator.userAgent.toLowerCase().indexOf('micromessenger')
       return ua !== -1
     },
+    // 时间戳转变
+    timeFormat(val, type) {
+      let time = ''
+      if (val) {
+        let date = new Date(val * 1000)
+        let year = date.getFullYear()
+        let month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+        let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+        let h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
+        let m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+        let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+    
+        if (type === 'second') {
+          // 2018.11.12 00:00
+          time = `${year}.${month}.${day} ${h}:${m}`
+        } else if (type === 'time') {
+          // 12月11日00:00
+          time = `${month}月${day}日${h}:${m}`
+        } else if (type === 'month') {
+          // 12月11日
+          time = `${month}月${day}日`
+        }
+      }
+      return time
+    }
 
   }
 ));
