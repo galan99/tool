@@ -75,7 +75,7 @@ let myTool = (function () {}(
       var ua = window.navigator.userAgent.toLowerCase().indexOf('micromessenger')
       return ua !== -1
     },
-    // 时间戳转变
+    // 时间戳转时间
     timeFormat(val, type) {
       let time = ''
       if (val) {
