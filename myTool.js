@@ -71,12 +71,17 @@ let myTool = (function () {}(
       return text
     },
     // 判断微信浏览器
-    isWeiXin() {
-      var ua = navigator.userAgent.toLowerCase().indexOf('micromessenger')
-      return ua !== -1
-    },
+    isWeiXin: /micromessenger/i.test(navigator.userAgent.toLowerCase()),
     isIos: /iphone/i.test(navigator.userAgent.toLowerCase()) || /ipad/i.test(navigator.userAgent.toLowerCase()),
     isAndroid: /android/i.test(navigator.userAgent.toLowerCase()),
+    // 判断数据类型
+    isType(obj, type) {
+      // obj instanceof Array
+      // obj.constructor === Array
+      // Array.isArray(obj)
+      // undefined function boolean number string array object
+      return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() === type
+    },
     // 时间戳转时间
     timeFormat(val, type) {
       let time = ''
@@ -200,6 +205,7 @@ let myTool = (function () {}(
         document.removeEventListener('touchmove', defaultEvent, false)
       }, false)
     },
+    // ajax封装
     ajax(opt) {
       let oAjax = null
       let j = {}
