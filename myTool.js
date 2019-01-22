@@ -72,9 +72,11 @@ let myTool = (function () {}(
     },
     // 判断微信浏览器
     isWeiXin() {
-      var ua = window.navigator.userAgent.toLowerCase().indexOf('micromessenger')
+      var ua = navigator.userAgent.toLowerCase().indexOf('micromessenger')
       return ua !== -1
     },
+    isIos: /iphone/i.test(navigator.userAgent.toLowerCase()) || /ipad/i.test(navigator.userAgent.toLowerCase()),
+    isAndroid: /android/i.test(navigator.userAgent.toLowerCase()),
     // 时间戳转时间
     timeFormat(val, type) {
       let time = ''
@@ -86,7 +88,7 @@ let myTool = (function () {}(
         let h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
         let m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
         let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
-    
+
         if (type === 'second') {
           // 2018.11.12 00:00
           time = `${year}.${month}.${day} ${h}:${m}`
