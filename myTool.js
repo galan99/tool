@@ -101,7 +101,149 @@ let myTool = (function () {}(
         }
       }
       return time
-    }
+    },
+    // 数组里最大的数字
+    max(arr) {
+      // 方法1
+      return Math.max(...arr)
+      // 方法2
+      return Math.max.apply(Math, arr)
+    },
+    // 设置html的font-size
+    setFontSize(_client) {
+      // _client 设计稿的宽度
+      let docEl = document.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        countSize = function () {
+          // 方法1
+          let devieWidth = Math.min(_client, docEl.clientWidth, docEl.clientHeight)
+          let fonSize = devieWidth > 1080 ? 144 : devieWidth / _client * 100
+          docEl.style.fontSize = fonSize + 'px'
 
+          // 方法2 根据vw ios兼容最低7 android兼容最低4.4
+          docEl.style.fontSize = 100 / _client * 100 + 'vw'
+        };
+      window.addEventListener(resizeEvt, countSize, false)
+      countSize()
+    },
+    // 查找类名 html5属性classList
+    hasClass(obj, className) {
+      // let obj = document.querySelectorAll(obj)
+      return obj.classList.contains(className)
+    },
+    // 添加类名
+    addClass(obj, className) {
+      obj.classList.add(className)
+      return this
+    },
+    // 删除类名
+    removeClass(obj, className) {
+      obj.classList.remove(className)
+      return this
+    },
+    // 动画
+    animate(obj, josn, fn) {
+      function css(obj, attr) {
+        if (obj.currentStyle) {
+          return obj.currentStyle[attr]
+        }
+        return getComputedStyle(obj, false)[attr]
+      }
+      clearInterval(obj.iTimer)
+      var iSpeed = 0
+      var iCur = 0
+      obj.iTimer = setInterval(function () {
+        var iEnd = true
+        for (var attr in json) {
+          iCur = parseInt(css(obj, attr))
+          iSpeed = (json[attr] - iCur) / 8
+          iSpeed = iSpeed > 0 ? Math.ceil(iSpeed) : Math.floor(iSpeed)
+
+          if (iCur !== json[attr]) {
+            iEnd = false;
+            obj.style[attr] = iSpeed + iCur + 'px';
+          }
+          if (iEnd) {
+            clearInterval(obj.iTimer);
+            fn && fn.call(obj);
+          }
+        }
+      }, 30);
+    },
+    // 拖拽移动
+    drag(block) {
+      var oW
+      var oH
+      var maxWidth = document.documentElement.clientWidth - block.offsetWidth
+      var maxHeight = document.documentElement.clientHeight - block.offsetHeight
+      block.addEventListener('touchstart', function (e) {
+        var touches = e.touches[0]
+        oW = touches.clientX - block.offsetLeft
+        oH = touches.clientY - block.offsetTop
+        document.addEventListener('touchmove', defaultEvent, false)
+      }, false)
+
+      block.addEventListener('touchmove', function (e) {
+        var touches = e.touches[0]
+        var oLeft = touches.clientX - oW
+        var oTop = touches.clientY - oH
+        oLeft = oLeft < 0 ? 0 : oLeft
+        oLeft = oLeft > maxWidth ? maxWidth : oLeft
+        oTop = oTop < 0 ? 0 : oTop
+        oTop = oTop > maxHeight ? maxHeight : oTop
+        block.style.left = oLeft + 'px'
+        block.style.top = oTop + 'px'
+        e.preventDefault()
+      }, false)
+
+      block.addEventListener('touchend', function () {
+        document.removeEventListener('touchmove', defaultEvent, false)
+      }, false)
+    },
+    ajax(opt) {
+      let oAjax = null
+      let j = {}
+      if (window.XMLHttpRequest) {
+        oAjax = new XMLHttpRequest();
+      } else {
+        oAjax = new ActiveXObject('Microsoft.XMLHTTP')
+      }
+
+      j.method = opt.method || 'get'
+      j.url = opt.url || ''
+      j.data = opt.data || ''
+      j.callback = opt.callback || function () {}
+
+      if (j.method == 'get' && j.data) {
+        let data_send = '?'
+        Object.keys(j.data).forEach(key => {
+          data_send += `${key}=${j.data[key]}`
+        })
+        j.url += data_send.slice(0, -1)
+      }
+
+      oAjax.open(j.method, j.url, true)
+
+      if (j.method == 'get') {
+        oAjax.send()
+      } else {
+        let data = j.data
+        let header = 'application/x-www-form-urlencoded'
+        if (typeof j.data !== 'string') {
+            header = 'application/json'
+            data = JSON.stringify(data)
+        }
+        xhr.setRequestHeader('Content-type', header)
+        xhr.send(data)
+      }
+
+      oAjax.onreadystatechange = function () {
+        if (oAjax.readyState == 4) {
+          if (oAjax.status == 200) {
+            j.callback(oAjax.responseText)
+          }
+        }
+      }
+    }
   }
 ));
