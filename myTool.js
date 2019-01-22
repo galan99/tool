@@ -1,18 +1,22 @@
-
-let myTool = (function(){}(
+let myTool = (function () {}(
   return {
-    checkPhone(str){
+    // 手机号验证
+    checkPhone(str) {
       return /^1[0-9]{10}$/.test(str)
     },
-    tel(str){
+    // 电话验证
+    tel(str) {
       return /^(0\d{2,3}-\d{7,8})(-\d{1,4})?$/.test(str)
     },
-    trim(str){
+    // 首尾空格去除
+    trim(str) {
       return str.replace(/(^\s*)|(\s*$)/g, '')
     },
-    trimAll(str){
+    // 替换所有空格
+    trimAll(str) {
       return str.replace(/\s+/g, '');
     },
+    // 获取url参数
     getQueryString(name) {
       let url = location.href.split('?')[1]
       let theRequest = {}
@@ -24,11 +28,13 @@ let myTool = (function(){}(
       }
       return theRequest[name]
     },
+    // 设置cookie
     setCookie(name, value, iDay) {
       var oDate = new Date()
       oDate.setDate(oDate.getDate() + iDay)
       document.cookie = name + '=' + value + ';expires=' + oDate + '; path=/'
     },
+    // 获取cookie
     getCookie(name) {
       var arr = document.cookie.split('; ')
       for (var i = 0; i < arr.length; i++) {
@@ -39,12 +45,18 @@ let myTool = (function(){}(
       }
       return ''
     },
+    // 删除cookie
     removeCookie(name) {
       this.setCookie(name, '', -1)
-    }
-    setItem(name, value) {
-      localStorage.setItem(key, JSON.stringify({ val: value, time: new Date().getTime() }))
     },
+    // 设置本地存储
+    setItem(name, value) {
+      localStorage.setItem(key, JSON.stringify({
+        val: value,
+        time: new Date().getTime()
+      }))
+    },
+    // 获取本地存储
     getItem(key, day) {
       let text = ''
       let val = localStorage.getItem(key)
@@ -58,10 +70,11 @@ let myTool = (function(){}(
       }
       return text
     },
+    // 判断微信浏览器
     isWeiXin() {
       var ua = window.navigator.userAgent.toLowerCase().indexOf('micromessenger')
       return ua !== -1
     },
-    
+
   }
 ));
