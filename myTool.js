@@ -1,4 +1,4 @@
-let myTool = (function () {}(
+let myTool = (function() {}(
   return {
     // 手机号验证
     checkPhone(str) {
@@ -72,7 +72,7 @@ let myTool = (function () {}(
     },
     // 判断微信浏览器
     isWeiXin: /micromessenger/i.test(navigator.userAgent.toLowerCase()),
-    isIos: /iphone/i.test(navigator.userAgent.toLowerCase()) || /ipad/i.test(navigator.userAgent.toLowerCase()),
+    isIos: /iphone|ipad/i.test(navigator.userAgent.toLowerCase()),
     isAndroid: /android/i.test(navigator.userAgent.toLowerCase()),
     // 判断数据类型
     isType(obj, type) {
@@ -81,6 +81,15 @@ let myTool = (function () {}(
       // Array.isArray(obj)
       // undefined function boolean number string array object
       return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() === type
+    },
+    // 深拷贝对象
+    clone(obj) {
+      if ("object" != typeof obj) return obj
+      var copy = obj instanceof Array ? [] : {}
+      for (var attr in obj) {
+          copy[attr] = clone(obj[attr])
+      }
+      return copy
     },
     // 时间戳转时间
     timeFormat(val, type) {
@@ -207,6 +216,14 @@ let myTool = (function () {}(
     },
     // ajax封装
     ajax(opt) {
+      /*
+        opt：参数
+        method: 请求方式
+        url： 请求url
+        data: 请求参数
+        callback：请求成功回调
+        async: 请求异步同步，默认异步
+      */
       let oAjax = null
       let j = {}
       if (window.XMLHttpRequest) {
@@ -228,7 +245,7 @@ let myTool = (function () {}(
         j.url += data_send.slice(0, -1)
       }
 
-      oAjax.open(j.method, j.url, true)
+      oAjax.open(j.method, j.url, opt.async || true)
 
       if (j.method == 'get') {
         oAjax.send()
@@ -252,4 +269,4 @@ let myTool = (function () {}(
       }
     }
   }
-));
+))
