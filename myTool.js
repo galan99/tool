@@ -100,28 +100,22 @@ let myTool = {
   },
   // 时间戳转时间
   timeFormat(val, type) {
-    let time = ''
-    if (val) {
-      let date = new Date(val * 1000)
-      let year = date.getFullYear()
-      let month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
-      let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
-      let h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
-      let m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
-      let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+    const addNum = (num) => (num < 10 ? `0${num}` : num)
+    let formateArr = ['Y', 'M', 'D', 'h', 'm', 's']
+    let list = []
 
-      if (type === 'second') {
-        // 2018.11.12 00:00
-        time = `${year}.${month}.${day} ${h}:${m}`
-      } else if (type === 'time') {
-        // 12月11日00:00
-        time = `${month}月${day}日${h}:${m}`
-      } else if (type === 'month') {
-        // 12月11日
-        time = `${month}月${day}日`
-      }
+    let date = new Date(val * 1000)
+    list.push(date.getFullYear())
+    list.push(addNum(date.getMonth() + 1))
+    list.push(addNum(date.getDate()))
+    list.push(addNum(date.getHours()))
+    list.push(addNum(date.getMinutes()))
+    list.push(addNum(date.getSeconds()))
+
+    for (let i in formateArr) {
+      type = type.replace(formateArr[i], list[i])
     }
-    return time
+    return type
   },
   // 数组里最大的数字
   max(arr) {
