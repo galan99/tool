@@ -100,6 +100,7 @@ let myTool = {
   },
   // 时间戳转时间
   timeFormat(val, type) {
+    // (1602315918, 'Y年M月D') -> '2020年10月10'
     const addNum = (num) => (num < 10 ? `0${num}` : num)
     let formateArr = ['Y', 'M', 'D', 'h', 'm', 's']
     let list = []
@@ -116,6 +117,11 @@ let myTool = {
       type = type.replace(formateArr[i], list[i])
     }
     return type
+  },
+  // 数组里字段拼接
+  strConcat(arr){
+    // [{name: 'a'}, {name: ''}, {name: 'b'}] -> 'a,b'
+    return arr.reduce((a, b) => { return `${a.name || a}${(b.name && a) && ','}${b.name}`}, '')
   },
   // 数组里最大的数字
   max(arr) {
