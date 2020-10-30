@@ -121,7 +121,26 @@ let myTool = {
   // 数组里字段拼接
   strConcat(arr){
     // [{name: 'a'}, {name: ''}, {name: 'b'}] -> 'a,b'
-    return arr.reduce((a, b) => { return `${a.name || a}${(b.name && a) && ','}${b.name}`}, '')
+    return arr.filter(key => key.name).map(key => key.name).join(',') // 方法1
+    return arr.reduce((a, b) => { return `${a.name || a}${(b.name && a) && ','}${b.name}`}, '') // 方法2
+  },
+  // 数组根据字段拼接重复的数据
+  sameData(list, key) {
+    // [{name: 'a', id:1}, {name: 'b', id: 2}, {name: 'a', id: 3}, {name: 'b', id: 4}, {name: 'c', id: 5}] ->
+    // [{name: 'a', id:1, long: 'a1'}, {name: 'b', id: 2, long: 'b2'}, {name: 'a', id: 3, long: 'a3'}, {name: 'b', id: 4, long: 'b4'}, {name: 'c', id: 5, long: 'c'}]
+    var res = list.reduce((json, next) => {
+      json[next[key]] = json[next[key]] ? ++json[next[key]] : 1 
+      return json
+    }, {})
+    list.forEach(key => {
+      Object.keys(res).forEach(val => {
+        if (key.key === val) {
+          key.long = res[val] > 1 ? key.key + key.id : key.key
+        }
+      })
+    })
+    res = null
+    return list
   },
   // 数组里最大的数字
   max(arr) {
