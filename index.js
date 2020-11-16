@@ -161,17 +161,13 @@ let myTool = {
     let target = res[0]
     let result = res.length === 2 ? res[1] : {}
     for (let key in target) {
-      let type = Object.prototype.toString
-        .call(target[key])
-        .slice(8, -1)
-        .toLowerCase();
-      if (type === "object") {
-        formatData(target[key], result);
+      if (typeof target[key] === "object") {
+        formatData(target[key], result)
       } else {
-        result[key] = target[key];
+        result[key] = target[key]
       }
     }
-    return result;
+    return result
   },  
   // 数组里最大的数字
   max(arr) {
