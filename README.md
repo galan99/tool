@@ -159,6 +159,25 @@ let myTool = {
     res = null;
     return list;
   },
+  // json扁平化
+  formatData = (...res) => {
+    // var json = {name: 'xiaoming', child: {age: 22, child: {sex: 'boy'}}}
+    // {name: 'xiaoming', age: 22, sex: 'boy'}
+    let target = res[0]
+    let result = res.length === 2 ? res[1] : {}
+    for (let key in target) {
+      let type = Object.prototype.toString
+        .call(target[key])
+        .slice(8, -1)
+        .toLowerCase();
+      if (type === "object") {
+        formatData(target[key], result);
+      } else {
+        result[key] = target[key];
+      }
+    }
+    return result;
+  },  
   // 数组里最大的数字
   max(arr) {
     // 方法1
@@ -329,5 +348,6 @@ let myTool = {
     };
   },
 };
+
 
 ```
