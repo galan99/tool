@@ -154,6 +154,16 @@ let myTool = {
     res = null;
     return list;
   },
+  // 正则替换标签内的属性
+  replaceAttr(str) {
+    // element-ui-v1升级到v2,el-dialog 的 v-model 需要换成 :visible.sync
+    /*
+      let str = '<el-dialog title="在线客服" v-model="dialogVisible" ><a class="btn" @click="dialogVisible = false">确定</a></el-dialog>'
+      console.log(str.replace(/\<el-dialog.*?>/gi, (val) => val.replace(/v\-model/, ':visible.sync')))
+      // <el-dialog title="在线客服" :visible.sync="dialogVisible" ><a class="btn" @click="dialogVisible = false">确定</a></el-dialog
+    */
+    return str.replace(/\<el-dialog.*?>/gi, (val) => val.replace(/v\-model/, ':visible.sync'))
+  },
   // json扁平化
   formatData = (...res) => {
     // var json = {name: 'xiaoming', child: {age: 22, child: {sex: 'boy'}}}
