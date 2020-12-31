@@ -99,12 +99,18 @@ let myTool = {
   isIos: /iphone|ipad/i.test(navigator.userAgent.toLowerCase()),
   isAndroid: /android/i.test(navigator.userAgent.toLowerCase()),
   // 判断数据类型
-  isType(obj, type) {
+  isObject(obj, type) {
     // obj instanceof Array
     // obj.constructor === Array
     // Array.isArray(obj)
     // undefined function boolean number string array object
     return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() === type
+  },
+  // 对象初始化
+  setObject(obj, targets, type = "object") {
+    targets.forEach(key => {
+      obj[key] = this.isObject(obj[key], type) ? obj[key] : (type === "object" ? {} : []);
+    });
   },
   // 深拷贝对象
   clone(obj) {
@@ -138,7 +144,7 @@ let myTool = {
   // 数组里字段拼接
   strConcat(arr) {
     // [{name: 'a'}, {name: ''}, {name: 'b'}] -> 'a,b'
-    return arr.filter((key) => key.name).map((key) => key.name).join(","); // 方法1
+    return arr.map((key) => key.name).join(","); // 方法1
     return arr.reduce((a, b) => (`${a.name || a}${b.name && a && ","}${b.name}`), ""); // 方法2
   },
   // 数组根据字段拼接重复的数据
@@ -354,6 +360,7 @@ let myTool = {
     };
   },
 };
+
 
 
 
