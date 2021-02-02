@@ -1,4 +1,4 @@
-let myTool = {
+const myTool = {
   // 判断是否为数字，类数字
   isNumber(val) {
     return parseFloat(val).toString() === "NaN";
@@ -184,7 +184,27 @@ let myTool = {
       }
     }
     return result
-  },  
+  },
+  // 根据字段递归对象查找
+  deepData(json, name) {
+    if (this.isObject(json, 'object')) {
+      Object.keys(json).forEach(key => {
+        if (this.isObject(json[key], 'object')) {
+          console.log(key)
+          deepData(json[key], name)
+        } else {
+          if (key === name) {
+            console.log(json, json[name])
+          }
+        }
+      })
+    }
+  },
+  // includes多个参数匹配
+  includeMore(list, target) {
+    // ['1a', 'ss', '3'].some(key => '11111222'.includes(key))
+    return list.some(key => target.includes(key))
+  },
   // 数组里最大的数字
   max(arr) {
     // 方法1
@@ -192,6 +212,25 @@ let myTool = {
     // 方法2
     return Math.max.apply(Math, arr);
   },
+  // 查找类名 html5属性classList
+  hasClass(obj, className) {
+    // let obj = document.querySelectorAll(obj)
+    return obj.classList.contains(className);
+  },
+  // 添加类名
+  addClass(obj, className) {
+    obj.classList.add(className);
+    return this;
+  },
+  // 删除类名
+  removeClass(obj, className) {
+    obj.classList.remove(className);
+    return this;
+  },
+};
+
+// 不常用
+const comFunction = {
   // 设置html的font-size
   setFontSize(_client) {
     // _client 设计稿的宽度
@@ -213,21 +252,6 @@ let myTool = {
       };
     window.addEventListener(resizeEvt, countSize, false);
     countSize();
-  },
-  // 查找类名 html5属性classList
-  hasClass(obj, className) {
-    // let obj = document.querySelectorAll(obj)
-    return obj.classList.contains(className);
-  },
-  // 添加类名
-  addClass(obj, className) {
-    obj.classList.add(className);
-    return this;
-  },
-  // 删除类名
-  removeClass(obj, className) {
-    obj.classList.remove(className);
-    return this;
   },
   // 动画
   animate(obj, josn, fn) {
@@ -354,4 +378,4 @@ let myTool = {
       }
     };
   },
-};
+}
