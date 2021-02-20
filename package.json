@@ -1,0 +1,26 @@
+{
+  "name": "tool",
+  "version": "1.0.0",
+  "description": "实例为日常开发常用的小实例，获取url参数，时间戳转换，cookie操作的封装等。",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/galan99/tool.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/galan99/tool/issues"
+  },
+  "homepage": "https://github.com/galan99/tool#readme",
+  "devDependencies": {
+    "exec-sh": "^0.3.4",
+    "gh-pages": "^3.1.0",
+    "inquirer": "^7.3.3"
+  }
+}
