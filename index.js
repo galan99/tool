@@ -227,6 +227,11 @@ const myTool = {
     obj.classList.remove(className);
     return this;
   },
+  // 数组去重
+  unique(arr, val) {
+    const res = new Map();
+    return arr.filter(item => !res.has(item[val]) && res.set(item[val], 1))
+  }
 };
 
 // 不常用
